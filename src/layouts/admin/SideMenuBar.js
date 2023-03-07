@@ -24,11 +24,6 @@ const items = [
                 label:  <NavLink to='/admin/category-create'>Create</NavLink>,
                 icon: <FormOutlined />,
             },
-            {
-                key: '/admin/category-list',
-                label:  <NavLink to='/admin/category-list'>List</NavLink>,
-                icon: <OrderedListOutlined />,
-            }
         ]
     },
     {
