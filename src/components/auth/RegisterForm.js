@@ -19,7 +19,6 @@ const RegisterForm = () => {
     ]
 
     const onFinish = (values) => {
-        console.log(values)
         setIsSubmitting(true)
         registerRequest(values).then(result => {
             setIsSubmitting(false)

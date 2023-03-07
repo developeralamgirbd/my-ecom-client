@@ -8,11 +8,11 @@ import {useAuth} from "../../context/AuthProvider";
 
 const LoginForm = () => {
     const {setAuth, setToken} = useAuth();
-
-    const navigate = useNavigate();
     const location = useLocation();
+    const [form] = Form.useForm();
 
-    const onFinish = (values) => {
+    const onFinish = () => {
+        const values = form.getFieldsValue(true);
         loginRequest(values.email, values.password).then(res => {
 
             sessionSetAuth(res.data.user);
@@ -24,9 +24,17 @@ const LoginForm = () => {
         })
     };
 
+    const adminLogin = ()=>{
+      form.setFieldsValue({
+            email: 'prgalamgir@gmail.com',
+            password: 'Mrt@123456',
+        });
+    }
+
     return (
 
             <Form
+                form={form}
                 className='shadow-sm rounded p-4'
                 name="basic"
                 layout='vertical'
@@ -77,6 +85,7 @@ const LoginForm = () => {
                     </Button>
                 </Form.Item>
                 <div>Not registered?<Link to='/register' className='' > Create an Account</Link></div>
+                <Button block onClick={adminLogin}>Admin Login</Button>
             </Form>
 
     );

@@ -4,11 +4,13 @@ import {DownOutlined, KeyOutlined, SmileOutlined, UploadOutlined, UserOutlined} 
 import {sessionRemove} from "../../helpers/sessionHelper";
 import {useAuth} from "../../context/AuthProvider";
 import {Link} from "react-router-dom";
+import Title from "antd/es/typography/Title";
 
 const {Header} = Layout;
 
 const logout = ()=>{
-    sessionRemove();
+    localStorage.removeItem('token');
+    localStorage.removeItem('auth');
 }
 
 const items = [
@@ -33,7 +35,7 @@ const items = [
     {
         key: '3',
         label: (
-            <a href='frontend/src/layouts/admin/AppHeader#' onClick={logout} >
+            <a href='/' onClick={logout} >
                Log Out
             </a>
         ),
@@ -64,7 +66,11 @@ const AppHeader = () => {
                 }}
             >
                 <Row>
-                    <Col span={2} offset={22}>
+                    <Col span={22}>
+                        <Link to='/' className='pl-2'>Visit Site</Link>
+
+                    </Col>
+                    <Col span={2}>
                         <Avatar
                             style={{
                                 backgroundColor: color,
