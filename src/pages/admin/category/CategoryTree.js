@@ -3,10 +3,11 @@ import React from 'react';
 import {Col, Input, Row, Tree} from 'antd';
 import { useMemo, useState } from 'react';
 import useCategories from "../../../hooks/useCategories";
-const { Search } = Input;
+import categoriesTreeHelper from "../../../helpers/categoriesTreeHelper";
 
 const CategoryTree = () => {
     const [categories, setCategories] = useCategories();
+    // const defaultData = categoriesTreeHelper('title', categories);
 
   const defaultData = categories.reduce((acc, curr)=> {
 

@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Button, Menu} from "antd";
 import {AppstoreOutlined, DownOutlined, MailOutlined, SettingOutlined} from "@ant-design/icons";
 import {useLocation} from "react-router-dom";
+import useCategories from "../../hooks/useCategories";
+import categoriesTreeHelper from "../../helpers/categoriesTreeHelper";
 
 function getItem(label, key, icon, children, type) {
     return {
@@ -12,6 +14,7 @@ function getItem(label, key, icon, children, type) {
         type,
     };
 }
+
 const items = [
     getItem('Navigation One', 'sub1', <MailOutlined />, [
         getItem('Item 1', null, null, [getItem('Option 1', '1'), getItem('Option 2', '2')], 'group'),
@@ -29,13 +32,50 @@ const items = [
         getItem('Option 12', '12'),
     ]),
 ];
-const onClick = (e) => {
-    console.log('click', e);
-};
+
+
+
+
+
 const CategoriesMenu = () => {
     const [open, setOpen] = useState(false);
     const location = useLocation();
+    const [categories, setCategories] = useCategories();
+    const items = categoriesTreeHelper('label', categories);
 
+    // const handleCategory = (value)=>{
+    //     console.log(value)
+    // }
+
+    // const items = categories.reduce((acc, curr)=> {
+    //
+    //     const subCategories = curr.subCategory.reduce((accumulator, currentValue)=>{
+    //
+    //         const subChildren = currentValue.children !== undefined && currentValue.children.reduce((subChildAcc, subChildCurr) => {
+    //             return [...subChildAcc, {
+    //                 label:  <span onClick={() => handleCategory(subChildCurr)}>{subChildCurr}</span>,
+    //                 key: subChildCurr + ','+ currentValue._id }]
+    //         }, [])
+    //
+    //         return [...accumulator, {
+    //             label: <span onClick={() => handleCategory(currentValue.name)}>{currentValue.name}</span>,
+    //             key: currentValue._id,
+    //             children: subChildren
+    //         }]
+    //     }, [])
+    //
+    //
+    //     return [...acc, {
+    //         label: <span onClick={() => handleCategory(curr.name)}>{curr.name}</span>,
+    //         key: curr._id,
+    //         children: subCategories
+    //     }]
+    // }, [])
+
+
+    const onClick = (e) => {
+        console.log('click', e);
+    };
 
     return (
         <>
