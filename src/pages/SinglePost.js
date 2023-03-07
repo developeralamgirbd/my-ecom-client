@@ -10,8 +10,6 @@ const { Meta } = Card;
 const { Title } = Typography;
 
 
-
-
 const SinglePost = () => {
     const [cart, setCart] = useCart();
     const [isHovered, setIsHovered] = useState(false);
@@ -73,6 +71,17 @@ const SinglePost = () => {
         if (count === 1) return;
         setCount(prevState => prevState - 1)
     }
+
+    const handleSegment = (value)=>{
+        if (value === 1){
+            setOpenDesc(true)
+            setOpenSpec(false)
+        }else if(value === 2){
+            setOpenSpec(true)
+            setOpenDesc(false)
+        }
+    }
+
     const descriptionHandler = ()=>{
 
         setOpenDesc(true)
@@ -139,18 +148,20 @@ const SinglePost = () => {
                             </Row>
                         </Col>
                     </Row>
-                    <Segmented block options={[
+                    <Segmented block onChange={handleSegment} options={[
                         {
-                            label: <div onClick={descriptionHandler}>Description</div>,
-                            value: 'description'
+                            label: 'Description',
+                            value: 1
                         },
                         {
-                            label: <div onClick={specificationHandler}>Specification</div>,
-                            value: 'specification'
+                            label: 'Specification',
+                            value: 2
                         }
                     ]} />
 
-                    <div style={{display: openDesc ? 'block': 'none'}}>Descipton</div>
+                    <div style={{display: openDesc ? 'block': 'none'}} className='py-4'>
+                        {product?.description}
+                    </div>
                     <div style={{display: openSpec ? 'block': 'none'}}>Specification</div>
 
                 </Col>

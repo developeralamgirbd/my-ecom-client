@@ -21,6 +21,19 @@ const SiteHeader = () => {
 
     const items = [
         {
+            key: '5',
+            label: (
+                <>
+                    {
+                        auth.role === 'superadmin' && <Link to='/admin'>
+                            Admin Panel
+                        </Link>
+                    }
+                </>
+
+            ),
+        },
+        {
             key: '1',
             label: (
                 <Link to='/customer/profile'>
@@ -117,8 +130,6 @@ const SiteHeader = () => {
                                                                 </Space>
                                                             </a>
                                                         </Dropdown>
-
-
                                                     </li>
 
 

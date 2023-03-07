@@ -22,3 +22,6 @@ a{
     display: block!important;
     width: 100%;
 }
+.site-tree-search-value {
+   color: #f50;
+}
