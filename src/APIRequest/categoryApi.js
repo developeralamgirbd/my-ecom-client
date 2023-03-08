@@ -1,18 +1,51 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-export const categoryCreateUpdateRequest = async (name, id)=>{
-    try {
-        let url = '/categories';
-        if (!id){
-            await axios.post(url, {name});
-            toast.success('Category create success')
-        }else {
-            url = `/categories/${id}`;
-            await axios.patch(url, {name});
-            toast.success('Category update success')
-        }
+export const categoryCreateUpdateRequest = async (name, id, catForm, catAction, index)=>{
 
+    try {
+
+        if (catForm === 'root'){
+            if (!id && catAction !== 'update'){
+                await axios.post('/categories', {name});
+                toast.success('Category create success')
+            }else {
+                const {data} = await axios.patch(`/categories/${id}`, {name});
+                if (data.result.modifiedCount > 0){
+                    toast.success('Category update success')
+                }else {
+                    toast.error('Category update fail')
+                }
+
+            }
+
+        }else if (catForm === 'sub'){
+
+            if (id && catAction === 'create'){
+                await axios.post('/sub-categories', {name, parentID: id});
+                toast.success('Category create success')
+
+            }else if (id && catAction === 'update') {
+                const {data} = await axios.patch(`/sub-categories/${id}`, {name});
+                if (data.result.modifiedCount > 0){
+                    toast.success('Category update success')
+                }else {
+                    toast.error('Category update fail')
+                }
+            }else if(id && catAction === 'childcreate'){
+                console.log(index)
+                const {data} = await axios.put(`/sub-categories-children`, {name, id, index});
+                // if (data.result.modifiedCount > 0){
+                //     toast.success('Category update success')
+                // }else {
+                //     toast.error('Category update fail')
+                // }
+                // console.log(data);
+
+                toast.success('Category update success')
+                return true;
+            }
+        }
         return true
     }catch (e) {
         if (e.response.status === 400){
@@ -61,9 +94,9 @@ export const deleteCategoryRequest = async (id)=>{
     }
 }
 
-export const getSingleCategoryRequest = async (id)=>{
+export const getSingleCategoryRequest = async (id, childName)=>{
     try {
-        const {data} = await axios.get(`/categories/${id}`);
+        const {data} = await axios.get(`/categories/${id}/${childName}`);
         return data
 
     }catch (e) {

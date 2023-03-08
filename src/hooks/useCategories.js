@@ -5,6 +5,8 @@ import {getCategoryRequest} from "../APIRequest/categoryApi";
 
 const useCategories = () => {
     const [categories, setCategories] = useState([]);
+    const [reload, setReload] = useState(false);
+
     const loadCategories = async ()=>{
         try {
             getCategoryRequest().then(res => {
@@ -19,9 +21,9 @@ const useCategories = () => {
 
     useEffect(()=> {
         loadCategories().catch(e => console.log(e));
-    }, [])
+    }, [reload])
 
-    return [categories, setCategories];
+    return [categories, setCategories, setReload];
 };
 
 export default useCategories;
