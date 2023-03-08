@@ -51,7 +51,7 @@ const CategoryCreateForm = () => {
     }
 
     const subCatHandle = ()=>{
-        if (catForm === 'sub'){
+        if (catForm === 'sub' && formAction === 'childcreate'){
             setCatForm('sub')
             setCatAction('childcreate');
             setCatId(categoryID)
@@ -87,7 +87,7 @@ const CategoryCreateForm = () => {
                 </div>
                 <div>
                     <Button onClick={rootCatHandle} >New Root Category</Button>
-                    <Button onClick={subCatHandle} style={{marginLeft: '10px'}}>New Sub Category</Button>
+                    <Button onClick={subCatHandle} style={{marginLeft: '10px'}} disabled={catAction === 'childcreate'}>New Sub Category</Button>
                 </div>
             </div>
             <Row>
