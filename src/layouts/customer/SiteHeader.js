@@ -174,18 +174,13 @@ const SiteHeader = () => {
                                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
                                             <ul className="navbar-nav">
                                                 <li className="nav-item">
-                                                    <NavLink className="nav-link" aria-current="page" to="/cart">
+                                                    <NavLink className="nav-link" aria-current="page" to="/">
                                                         Home
                                                     </NavLink>
                                                 </li>
                                                 <li className="nav-item">
-                                                    <NavLink className="nav-link" aria-current="page" to="/cart">
+                                                    <NavLink className="nav-link" aria-current="page" to="/shop">
                                                         Shop
-                                                    </NavLink>
-                                                </li>
-                                                <li className="nav-item">
-                                                    <NavLink className="nav-link" aria-current="page" to="/cart">
-                                                        Blog
                                                     </NavLink>
                                                 </li>
                                             </ul>

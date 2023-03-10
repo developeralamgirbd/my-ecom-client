@@ -1,82 +1,141 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Card, Col, Form, Input, Row} from "antd";
+import React, {useState} from 'react';
+import {Button, Card, Col, Form, Input, Row, Tree} from "antd";
 import {
-    categoryCreateUpdateRequest,
+    categoryCreateUpdateRequest, getCategoryRequest, subCatChildrenCreateUpdateRequest, subCategoryCreateUpdateRequest,
 } from "../../APIRequest/categoryApi";
-import {useLocation, useNavigate, useNavigation} from "react-router-dom";
 import Title from "antd/es/typography/Title";
-import CategoryTree from "./CategoryTree";
+import useCategories from "../../hooks/useCategories";
+import {DownOutlined} from "@ant-design/icons";
 
 const CategoryCreateForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [catForm, setCatForm] = useState('root');
-    const [catAction, setCatAction] = useState('');
+
     const [catId, setCatId] = useState('');
-    const [index, setIndex] = useState(0);
+    const [catForm, setCatForm] = useState('');
+    const [formAction, setFormAction] = useState('');
+    const [index, setIndex] = useState(null);
 
     const [form] = Form.useForm();
-    const navigate = useNavigate();
-    const location = useLocation();
-    const navigation =  useNavigation();
+    const [categories, setCategories] = useCategories();
+
+    // Category Tree
+    const treeData = categories.reduce((rootAcc, rootCurr)=> {
+
+        const subCategories = rootCurr.subCategory.reduce((subAcc, subCurr)=>{
+
+            const subChildren = subCurr.children !== undefined && subCurr.children.reduce((subChildAcc, subChildCurr, index) => {
+                return [...subChildAcc, {
+                    title: <span onClick={()=> handleSubCategoryChild(subCurr._id, subChildCurr, index)}>{subChildCurr}</span>,
+                    key: subChildCurr + ','+ subCurr._id }]
+            }, [])
+
+            return [...subAcc, {
+                title: <span onClick={()=> handleSubcategory(subCurr._id, subCurr.name, rootCurr._id)}>{subCurr.name}</span>,
+                key: subCurr._id,
+                children: subChildren
+            }]
+        }, [])
+
+        return [...rootAcc, {
+            title: <span onClick={()=> handleParentCategory(rootCurr._id, rootCurr.name)}>{rootCurr.name}</span>,
+            key: rootCurr._id,
+            children: subCategories
+        }]
+    }, [])
+
+    const handleParentCategory = (id, name)=>{
+       setCatForm('root')
+       setFormAction('update');
+       setCatId(id);
+        form.setFieldsValue({
+            name: name
+        })
+
+    }
+
+    const handleSubcategory = (id, name)=>{
+        setCatForm('sub')
+        setFormAction('update');
+        setCatId(id);
+        form.setFieldsValue({
+            name: name
+        })
+    }
 
 
-    const categoryID = location.state?.id;
-    const categoryName = location.state?.name;
-    const categoryForm = location.state?.form;
-    const formAction = location.state?.action;
-    const subCatChildIndex = location.state?.index;
+    const handleSubCategoryChild = (id, name,index)=>{
+        setCatForm('subChild')
+        setFormAction('createOrUpdate');
+        setCatId(id);
+        setIndex(index)
+        form.setFieldsValue({
+            name: name
+        })
+    }
 
-    useEffect(()=>{
-        document.title = 'Category Create';
-        if (categoryID){
-            setCatForm(categoryForm);
-            setCatAction(formAction);
-            setCatId(categoryID);
-            setIndex(subCatChildIndex);
-
-            form.setFieldsValue({
-                name: categoryName
-            })
-        }
-
-    }, [categoryID, categoryName, categoryForm])
-
-
+    // Category Tree End
 
     const rootCatHandle = ()=>{
         setCatForm('root')
         setCatId('');
-        setCatAction('create');
+        setFormAction('create');
+        setIndex(null);
         form.resetFields();
     }
 
     const subCatHandle = ()=>{
-        if (catForm === 'sub' && formAction === 'childcreate'){
+
+        if (catForm === 'root'){
             setCatForm('sub')
-            setCatAction('childcreate');
-            setCatId(categoryID)
-            setIndex(subCatChildIndex)
+            setIndex(null);
+            setFormAction('create');
             form.resetFields();
         }else {
-            setCatForm('sub')
-            setCatAction('create');
-            setCatId(categoryID)
+            setCatForm('subChild')
+            setIndex(null);
+            setFormAction('create');
             form.resetFields();
         }
+
+
     }
+
+    const getCategories = ()=>{
+        getCategoryRequest().then(res => {
+            setCategories(res?.categories)
+        })
+    }
+
 
     const onFinish = () => {
         const values = form.getFieldsValue();
-        setIsSubmitting(true)
-
-        categoryCreateUpdateRequest(values.name, catId, catForm, catAction, index).then(res => {
-            setIsSubmitting(false)
-            if (res){
-                // navigate('/admin/category-create')
-                window.location.reload();
-                // form.resetFields();
-            }
-        })
+        if (catForm === 'root'){
+            categoryCreateUpdateRequest(values.name, catId).then(res => {
+                setIsSubmitting(false)
+                if (res){
+                    getCategories()
+                    form.resetFields();
+                }
+            })
+        }else if(catForm === 'sub'){
+            setIsSubmitting(true)
+            subCategoryCreateUpdateRequest(values.name, catId, formAction).then(res => {
+                setIsSubmitting(false)
+                if (res){
+                    getCategories()
+                    form.resetFields();
+                }
+            })
+        }else if(catForm === 'subChild'){
+            setIsSubmitting(true)
+            subCatChildrenCreateUpdateRequest(values.name, catId, index).then(res => {
+                setIsSubmitting(false)
+                if (res){
+                    getCategories()
+                    form.resetFields();
+                }
+            })
+        }
     };
 
     return (
@@ -87,12 +146,18 @@ const CategoryCreateForm = () => {
                 </div>
                 <div>
                     <Button onClick={rootCatHandle} >New Root Category</Button>
-                    <Button onClick={subCatHandle} style={{marginLeft: '10px'}} disabled={catAction === 'childcreate'}>New Sub Category</Button>
+                    <Button onClick={subCatHandle} style={{marginLeft: '10px'}} disabled={catForm === 'subChild'}>New Sub Category</Button>
                 </div>
             </div>
-            <Row>
+            <Row gutter={16}>
                 <Col span={8}>
-                    <CategoryTree />
+                    {/*<CategoryTree />*/}
+                    <Tree
+                        showLine
+                        defaultExpandAll
+                        switcherIcon={<DownOutlined />}
+                        treeData={treeData}
+                    />
                 </Col>
                 <Col span={16}>
 

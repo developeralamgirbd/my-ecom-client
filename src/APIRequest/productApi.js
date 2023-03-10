@@ -2,18 +2,19 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 export const productCreateUpdateRequest = async (value, id)=>{
+
     try {
         let url = '/products';
         if (!id){
-            await axios.post(url, value);
+            const {data} = await axios.post('/products', value);
             toast.success('Product create success')
+            return true
         }else {
             url = `/products/${id}`;
             await axios.patch(url, value);
             toast.success('Product update success')
+            return true
         }
-
-        return true
     }catch (e) {
         if (e.response.status === 400){
             toast.error(e.response.data.error)
@@ -28,6 +29,7 @@ export const productCreateUpdateRequest = async (value, id)=>{
 export const getSingleProductRequest = async (id)=>{
     try {
         const {data} = await axios.get(`/products/${id}`);
+
         return data
 
     }catch (e) {
@@ -66,6 +68,22 @@ export const getPostsByCategoryRequest = async (name, page)=>{
         }
     }
 }
+
+
+export const getProductsByCategoryRequest = async (name, page, perpage = 12)=>{
+    try {
+        const {data} = await axios.get(`/products/category/${name}/${page}/${perpage}`);
+        return data
+
+    }catch (e) {
+        if (e.response.status === 400){
+            // toast.error(e.response.data.error)
+        }else {
+            toast.error('Server error occurred')
+        }
+    }
+}
+
 export const getPostsByKeywordRequest = async (keyword, page)=>{
     try {
         const {data} = await axios.get(`/posts/search/${keyword}/${page}`);

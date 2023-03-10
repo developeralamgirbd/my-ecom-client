@@ -10,7 +10,7 @@ const { Meta } = Card;
 const { Title } = Typography;
 
 
-const SinglePost = () => {
+const SingleProduct = () => {
     const [cart, setCart] = useCart();
     const [isHovered, setIsHovered] = useState(false);
     const [product, setProduct] = useState({});
@@ -22,23 +22,14 @@ const SinglePost = () => {
     useEffect(()=>{
         getSingleProductRequest(params.id).then(res => {
             document.title = res.product.name
-            setProduct(res?.product)
+            setProduct(res?.product);
         })
     }, [])
 
-    const imageSrc = 'https://demo.martvill.techvill.net/public/uploads/20221123/6b2f904f2fafb2b96388290860425dd0.jpg'
 
-    const handleMouseEnter = () => {
-      setIsHovered(true);
-
-    };
-  
-    const handleMouseLeave = () => {
-      setIsHovered(false);
-    };
 
     const handleCart = ()=>{
-        product.count = 1;
+        product.count = count;
 
         let cartarr = [];
         cartarr= JSON.parse(localStorage.getItem('cart')) || [];
@@ -82,18 +73,6 @@ const SinglePost = () => {
         }
     }
 
-    const descriptionHandler = ()=>{
-
-        setOpenDesc(true)
-        setOpenSpec(false)
-    }
-    const specificationHandler = ()=>{
-
-        setOpenSpec(true)
-        setOpenDesc(false)
-    }
-
-
     return (
         <>
             <Row gutter={16}>
@@ -107,10 +86,10 @@ const SinglePost = () => {
                                     smallImage: {
                                         alt: 'Wristwatch by Ted Baker London',
                                         isFluidWidth: true,
-                                        src: imageSrc
+                                        src: product.image
                                     },
                                     largeImage: {
-                                        src: imageSrc,
+                                        src: product.image,
                                         width: 1200,
                                         height: 1800,
                                         zIndex: 1000
@@ -119,11 +98,12 @@ const SinglePost = () => {
                                 }} />
                             </Card>
                         </Col>
+
                         <Col span={12}>
 
                             <div className='d-flex gap-2'>
-                                <div className='p-1' style={{background: '#fafafa', color: '#595959'}}>Category: {product.categoryName}</div>
-                                <div className='p-1' style={{background: '#fafafa', color: '#595959'}}>Brand: Brand</div>
+                                <div className='p-1' style={{background: '#fafafa', color: '#595959'}}>Category: { product?.category ? product?.category[0] : ''}</div>
+                                <div className='p-1' style={{background: '#fafafa', color: '#595959'}}>Brand: {product?.brand ? product?.brand[0]?.name : ''}</div>
                             </div>
                             <Title>{product.name}</Title>
                             <Title>${product.price}</Title>
@@ -174,4 +154,4 @@ const SinglePost = () => {
     );
 };
 
-export default SinglePost;
+export default SingleProduct;

@@ -32,12 +32,12 @@ const items = [
         icon: <AntDesignOutlined />,
         children: [
             {
-                key: '/admin/post-create',
+                key: '/admin/product-create',
                 label:  <NavLink to='/admin/product-create'>Create</NavLink>,
                 icon: <FormOutlined />,
             },
             {
-                key: '/admin/post-list',
+                key: '/admin/product-list',
                 label:  <NavLink to='/admin/product-list'>List</NavLink>,
                 icon: <OrderedListOutlined />,
             }

@@ -1,4 +1,3 @@
-/*
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Card, Input, Space, Table} from "antd";
 import {deleteCategoryRequest, getCategoryRequest} from "../../APIRequest/categoryApi";
@@ -83,7 +82,7 @@ const PostList = () => {
     };
 
     const handleEdit = (id)=>{
-        navigate('/dashboard/post-create', {
+        navigate('/dashboard/product-create', {
             state: {
                 id
             }
@@ -202,24 +201,28 @@ const PostList = () => {
             ),
     });
 
+
+
+
+
     const columns = [
         {
-            title: 'Title',
-            dataIndex: 'title',
+            name: 'Name',
+            dataIndex: 'name',
             sorter: (a, b) => a.name.length - b.name.length,
             width: '20%',
-            ...getColumnSearchProps('title'),
+            ...getColumnSearchProps('name'),
         },
         {
-            title: 'Description',
-            dataIndex: 'description',
+            price: 'Price',
+            dataIndex: 'price',
             sorter: (a, b) => a.name.length - b.name.length,
             width: '20%',
-            ...getColumnSearchProps('description'),
+            ...getColumnSearchProps('price'),
         },
         {
-            title: 'Category',
-            dataIndex: 'categoryName',
+            quantity: 'Quantity',
+            dataIndex: 'quantity',
             sorter: (a, b) => a.name.length - b.name.length,
             width: '20%',
 
@@ -247,8 +250,37 @@ const PostList = () => {
         },
 
         {
-            title: 'Author',
-            dataIndex: 'authorName',
+            Category: 'category',
+            dataIndex: 'category',
+            sorter: (a, b) => a.name.length - b.name.length,
+            width: '20%',
+
+            filters: filteredCategory(),
+            // render: (text) =>
+            //     text ? (
+            //         <>
+            //             {console.log(text)}
+            //             <Highlighter
+            //                 highlightStyle={{
+            //                     backgroundColor: '#ffc069',
+            //                     padding: 0,
+            //                 }}
+            //                 searchWords={[text]}
+            //                 autoEscape
+            //                 textToHighlight={text ? text.toString() : ''}
+            //             />
+            //         </>
+            //
+            //     ) : (
+            //         text
+            //     ),
+
+            onFilter: (value, record) => record.categoryName.indexOf(value) === 0,
+        },
+
+        {
+            sold: 'Sold',
+            dataIndex: 'sold',
             sorter: (a, b) => a.name.length - b.name.length,
             width: '20%',
         },
@@ -289,4 +321,4 @@ const PostList = () => {
     );
 };
 
-export default PostList;*/
+export default PostList;

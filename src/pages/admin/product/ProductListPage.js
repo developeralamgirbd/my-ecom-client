@@ -1,6 +1,6 @@
 /*
 import React from 'react';
-import PostList from "../../components/post/PostList";
+import PostList from "../../components/product/PostList";
 
 const PostListPage = () => {
     return (

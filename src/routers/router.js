@@ -11,13 +11,13 @@ import NewPasswordPage from "../pages/auth/NewPasswordPage";
 import PrivateRoute from "./privateRoute";
 import CategoryCreatePage from "../pages/admin/category/CategoryCreatePage";
 import CategoryListPage from "../pages/admin/category/CategoryListPage";
-import ProductCreatePage from "../pages/post/ProductCreatePage";
-import PostListPage from "../pages/post/PostListPage";
+import ProductCreatePage from "../pages/admin/product/ProductCreatePage";
+import PostListPage from "../pages/admin/product/ProductListPage";
 import ProfilePage from "../pages/auth/ProfilePage";
 import UpdatePasswordPage from "../pages/auth/UpdatePasswordPage";
-import SinglePost from "../pages/SinglePost";
-import PostsByCategory from "../pages/PostsByCategory";
-import PostsBySearch from "../pages/PostsBySearch";
+import SingleProduct from "../pages/SingleProduct";
+import ProductsByCategory from "../pages/ProductsByCategory";
+import ProductsBySearch from "../pages/ProductsBySearch";
 import ShoppingCard from "../components/card/ShoppingCard";
 import SuperAdminRoute from "./superAdminRoute";
 import UserMain from "../layouts/UserMain";
@@ -43,11 +43,11 @@ const router = createBrowserRouter([
                 element: <CategoryListPage/>
             },
             {
-                path: '/admin/post-create',
+                path: '/admin/product-create',
                 element: <ProductCreatePage/>
             },
             {
-                path: '/admin/post-list',
+                path: '/admin/product-list',
                 element: <PostListPage/>
             },
             {
@@ -89,16 +89,16 @@ const router = createBrowserRouter([
                 element: <NewPasswordPage/>
             },
             {
-                path: '/post/:id',
-                element: <SinglePost/>
+                path: '/product/:id',
+                element: <SingleProduct/>
             },
             {
-                path: '/category/posts/:name',
-                element: <PostsByCategory/>
+                path: '/products/category/:name',
+                element: <ProductsByCategory/>
             },
             {
                 path: '/search',
-                element: <PostsBySearch/>
+                element: <ProductsBySearch/>
             },
             {
                 path: '/cart',
@@ -153,8 +153,8 @@ const router = createBrowserRouter([
                 <Route path="dashboard" element={<DashboardPage/>} />
                 <Route path="'dashboard/category-create'" element={<CategoryCreatePage/>} />
                 <Route path="dashboard/category-list" element={ <CategoryListPage/>} />
-                <Route path="dashboard/post-create" element={ <ProductCreatePage/>} />
-                <Route path="/dashboard/post-list" element={<PostListPage/>} />
+                <Route path="dashboard/product-create" element={ <ProductCreatePage/>} />
+                <Route path="/dashboard/product-list" element={<PostListPage/>} />
                 <Route path="/dashboard/change-password" element={<UpdatePasswordPage/>} />
 
             </Route>

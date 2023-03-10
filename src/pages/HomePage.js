@@ -48,11 +48,10 @@ const HomePage = () => {
     }, [])
 
 
-    console.log(products)
 
     return (
         <>
-            <TopSection/>
+            {/*<TopSection/>*/}
             <Row gutter={16}>
 
                 {
