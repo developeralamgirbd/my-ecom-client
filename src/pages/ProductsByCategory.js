@@ -18,11 +18,6 @@ const ProductsByCategory = () => {
             setProducts(res?.products[0]?.rows);
             setTotal(res?.products[0]?.totalProduct[0]?.count)
 
-          /*  getProductsByCategoryRequest(params.name, page).then(res => {
-                setProducts(res?.data[0]?.products);
-                setTotal(res?.data[0]?.totalPost[0]?.count)
-            })*/
-
         }catch (e) {
             console.log(e)
         }

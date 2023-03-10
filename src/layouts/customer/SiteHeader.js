@@ -189,7 +189,7 @@ const SiteHeader = () => {
                                     </div>
                                 </nav>
                             </div>
-                            {/*Feature Prodcuts*/}
+                            {/*Feature product*/}
                             <div style={{paddingLeft: '15px', paddingTop: '15px', height: '100%', display: location.pathname === '/' ? 'block': 'none' }}>
                                 <Carousel autoplay>
                                     <div style={{height: '100%'}}>

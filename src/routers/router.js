@@ -23,6 +23,7 @@ import SuperAdminRoute from "./superAdminRoute";
 import UserMain from "../layouts/UserMain";
 import UserDashboardPage from "../pages/dashboard/UserDashboard-page";
 import OrderPage from "../pages/OrderPage";
+import ShopPage from "../pages/ShopPage";
 
 const router = createBrowserRouter([
 
@@ -103,6 +104,10 @@ const router = createBrowserRouter([
             {
                 path: '/cart',
                 element: <ShoppingCard/>
+            },
+            {
+                path: '/shop',
+                element: <ShopPage/>
             }
 
         ]

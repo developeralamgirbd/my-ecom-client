@@ -1,20 +1,20 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {useSearch} from "../context/search";
-import {getPostsByKeywordRequest} from "../APIRequest/productApi";
+import {getProductsByKeywordRequest} from "../APIRequest/productApi";
 import React from "react";
 
 const Search = () => {
 
-    const { setPosts, keyword, setKeyword, setTotal } = useSearch();
+    const { setProducts, keyword, setKeyword, setTotal } = useSearch();
     const navigate = useNavigate();
 
     const handleSubmit = async (e)=> {
         e.preventDefault();
         try {
-            getPostsByKeywordRequest(keyword, 1).then(res => {
-                setPosts(res?.data[0]?.posts);
-                setTotal(res?.data[0]?.totalPost[0]?.count);
+            getProductsByKeywordRequest(keyword, 1).then(res => {
+                setProducts(res?.products?.rows);
+                setTotal(res?.products?.total)
             })
 
             navigate('/search');

@@ -11,9 +11,9 @@ const HomePage = () => {
     const [total, setTotal] = useState(0);
     const [products, setProduct] = useState([])
 
-    const loadPosts = async ()=> {
+    const loadProducts = async ()=> {
         try {
-            getProductsRequest(page, 3).then(res => {
+            getProductsRequest(page).then(res => {
                 setProduct(res?.products?.rows);
                 setTotal(res?.products?.total)
             })
@@ -26,7 +26,7 @@ const HomePage = () => {
     const loadMore = async ()=>{
         try {
             setLoading(true);
-            getProductsRequest(page, 3).then(res => {
+            getProductsRequest(page).then(res => {
                 setProduct([...products, ...res?.products?.rows])
             })
             setLoading(false);
@@ -44,7 +44,7 @@ const HomePage = () => {
 
     useEffect(()=> {
         document.title = 'Home'
-        loadPosts().catch(e => console.log(e));
+        loadProducts().catch(e => console.log(e));
     }, [])
 
 
@@ -52,7 +52,7 @@ const HomePage = () => {
     return (
         <>
             {/*<TopSection/>*/}
-            <Row gutter={16}>
+            <Row gutter={14}>
 
                 {
                     products.map(product => (

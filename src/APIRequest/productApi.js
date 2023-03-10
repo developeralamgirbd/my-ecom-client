@@ -93,6 +93,19 @@ export const getPostsByKeywordRequest = async (keyword, page)=>{
     }
 }
 
+export const getProductsByKeywordRequest = async (keyword, page, perpage = 12)=>{
+    try {
+        const {data} = await axios.get(`/products/search/${keyword}/${page}/${perpage}`);
+        return data
+    }catch (e) {
+        if (e.response.status === 400){
+            // toast.error(e.response.data.error)
+        }else {
+            toast.error('Server error occurred')
+        }
+    }
+}
+
 export const getAuthPostsRequest = async ()=>{
     try {
         const {data} = await axios.get('/posts/auth');
