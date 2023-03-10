@@ -63,10 +63,10 @@ const ProductCard = ({product}) => {
                     <div className='d-flex gap-2 justify-content-center'>
                         <Button type="primary"
                                 style={{background: '#faad14', color: '#141414', fontWeight: 'bold', padding: '0 20px'}}
-                                size='large' onClick={handleCart}>Add to cart</Button>
-                        <Button type="primary"
-                                style={{fontWeight: 'bold', padding: '0 20px'}}
-                                danger size='large' className='ml-2'>Buy now</Button>
+                                size='small' onClick={handleCart} block>Add to cart</Button>
+                        {/*<Button type="primary"*/}
+                        {/*        style={{fontWeight: 'bold', padding: '0 20px'}}*/}
+                        {/*        danger size='large' className='ml-2'>Buy now</Button>*/}
                     </div>
 
                 </div>
