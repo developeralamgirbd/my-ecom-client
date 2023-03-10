@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Card, Col, Divider, InputNumber, Row, Steps, theme, message} from "antd";
+import {Button, Card, Col, Divider, InputNumber, Row, Steps, theme, message, Image} from "antd";
 import {useCart} from "../../context/cart";
 import toast from "react-hot-toast";
 import {useAuth} from "../../context/AuthProvider";
@@ -30,11 +30,11 @@ const CartItem = ()=>{
 
     return (
         <>
-            <Card>
+
                 {
                     cart.map(product => (
                         <>
-                            <div>
+                            {/*<div>
                                 <h1>{product?.name}</h1>
                                 <Row>
                                     <Col flex={2}><p>{product?.price}</p></Col>
@@ -56,16 +56,47 @@ const CartItem = ()=>{
                                     </Col>
                                 </Row>
                             </div>
-                            <Divider></Divider>
+                            <Divider></Divider>*/}
+
+                            <Card>
+                                <div className='d-flex justify-content-between align-items-center'>
+                                    <div className='d-flex justify-content-between align-items-center gap-2'>
+                                        <div style={{width: '100px'}}>
+                                            <Image src={product?.image} ></Image>
+                                        </div>
+
+                                        <div>
+                                            <p>{product.name}</p>
+                                            <p>{product.price}</p>
+                                        </div>
+                                    </div>
+
+
+                                    <div>
+                                        <InputNumber min={1} max={product.quantity} defaultValue={product.count} onChange={(value)=>{
+
+                                            let cartarr = [];
+                                            cartarr = JSON.parse(localStorage.getItem('cart'));
+
+                                            cartarr.map((item, i) => {
+                                                if (item._id === product._id){
+                                                    cartarr[i].count =  value
+                                                }
+                                            })
+
+                                            localStorage.setItem('cart', JSON.stringify(cartarr));
+                                            setCart(cartarr);
+                                        }} />
+                                    </div>
+                                    <div>
+                                        <Button>Delete</Button>
+                                    </div>
+                                </div>
+                            </Card>
+
                         </>
                     ))
                 }
-                <div className='d-flex justify-content-between'>
-                    <p></p>
-                    <div><p>Total Amount</p><p>${parseFloat(totalPrice).toFixed(2)}</p></div>
-                </div>
-
-            </Card>
 
         </>
     )
@@ -73,15 +104,19 @@ const CartItem = ()=>{
 
 const steps = [
     {
-        title: 'My Cart',
+        title: 'MY CART',
         content: <CartItem/>,
     },
     {
-        title: 'Checkout',
+        title: 'CHECKOUT',
         content: 'Second-content',
     },
     {
-        title: 'Payment',
+        title: 'PAYMENT',
+        content: 'Last-content',
+    },
+    {
+        title: 'ORDER COMPLETE',
         content: 'Last-content',
     },
 ];
@@ -195,7 +230,10 @@ const ShoppingCard = () => {
                     <div>
                         <Row gutter={16}>
                         <Col span={18}>
-                            <div style={contentStyle}>{steps[current].content}</div>
+                            {cart.length > 0 ? <div style={contentStyle}>{steps[current].content}</div> : <div className='my-5'>
+                                Select the items you want to buy
+                            </div> }
+
 
                         </Col>
 
@@ -225,7 +263,7 @@ const ShoppingCard = () => {
                                         >
                                             {current < steps.length - 1 && (
                                                 <Button type="primary" block onClick={() => next()}>
-                                                    Procced to checkout
+                                                    {current === 0 ? 'Proceed to checkout' : 'Make Payment'}
                                                 </Button>
                                             )}
                                             {current === steps.length - 1 && (
@@ -241,7 +279,7 @@ const ShoppingCard = () => {
                                                     }}
                                                     onClick={() => prev()}
                                                 >
-                                                    Previous
+                                                    Back to cart
                                                 </Button>
                                             )}
                                         </div>
