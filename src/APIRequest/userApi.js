@@ -85,6 +85,22 @@ export const getProfileRequest = async ()=>{
     }
 }
 
+export const getAddressRequest = async ()=>{
+
+    try {
+        const {data} =  await axios.get(`/address`);
+        return data
+    }catch (e) {
+        if (e.response.status === 400){
+            toast.error(e.response.data.error)
+            return false
+        }else {
+            toast.error('Server error occurred')
+            return false
+        }
+    }
+}
+
 export const resetPasswordRequest = async (email, otp, password, confirmPassword)=>{
     try {
 

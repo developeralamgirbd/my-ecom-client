@@ -150,9 +150,9 @@ export const getPaymentTokenRequest = async ()=>{
     }
 }
 
-export const checkoutRequest = async (nonce, cart)=>{
+export const checkoutRequest = async (nonce, cart, shippingAddress)=>{
     try {
-        const {data} = await axios.post(`/checkout`, {nonce, cart});
+        const {data} = await axios.post(`/checkout`, {nonce, cart, shippingAddress});
         return data
     }catch (e) {
         toast.error(e.response.data.error)
