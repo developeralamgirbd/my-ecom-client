@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Col, List, Row} from "antd";
+import {Button, Col, List, Row, Skeleton} from "antd";
 import {getProductsRequest} from "../APIRequest/productApi";
 import ProductCard from "../components/card/ProductCard";
 import TopSection from "../components/home/TopSection";
@@ -13,7 +13,9 @@ const HomePage = () => {
 
     const loadProducts = async ()=> {
         try {
+                setLoading(true)
             getProductsRequest(page).then(res => {
+                setLoading(false)
                 setProduct(res?.products?.rows);
                 setTotal(res?.products?.total)
             })
@@ -43,7 +45,7 @@ const HomePage = () => {
     }, [page])
 
     useEffect(()=> {
-        document.title = 'Home'
+        document.title = 'Home';
         loadProducts().catch(e => console.log(e));
     }, [])
 
@@ -56,11 +58,45 @@ const HomePage = () => {
 
                 {
                     products.map(product => (
-                            <Col span={6}>
-                                 <ProductCard product={product}/>
-                             </Col>
+                        <Col span={6}>
+                             <ProductCard product={product}/>
+                         </Col>
                     ))
                 }
+
+                <Col span={6} style={{marginBottom: '30px'}}>
+                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
+                    </Skeleton>
+                </Col>
+                <Col span={6} style={{marginBottom: '30px'}}>
+                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
+                    </Skeleton>
+                </Col>
+                <Col span={6} style={{marginBottom: '30px'}}>
+                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
+                    </Skeleton>
+                </Col>
+                <Col span={6} style={{marginBottom: '30px'}}>
+                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
+                    </Skeleton>
+                </Col>
+                <Col span={6} style={{marginBottom: '30px'}}>
+                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
+                    </Skeleton>
+                </Col>
+                <Col span={6} style={{marginBottom: '30px'}}>
+                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
+                    </Skeleton>
+                </Col>
+                <Col span={6} style={{marginBottom: '30px'}}>
+                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
+                    </Skeleton>
+                </Col>
+                <Col span={6} style={{marginBottom: '30px'}}>
+                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
+                    </Skeleton>
+                </Col>
+
             </Row>
 
             {products && products.length < total && (

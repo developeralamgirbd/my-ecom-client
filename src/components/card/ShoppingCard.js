@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Card, Col, Divider, InputNumber, Row} from "antd";
+import {Button, Card, Col, Divider, InputNumber, Row, Steps, theme, message} from "antd";
 import {useCart} from "../../context/cart";
 import toast from "react-hot-toast";
 import {useAuth} from "../../context/AuthProvider";
@@ -7,6 +7,84 @@ import {checkoutRequest, getPaymentTokenRequest, getSingleProductRequest} from "
 // import DropIn from "braintree-web-drop-in-react";
 import DropIn from "braintree-web-drop-in";
 import {useNavigate} from "react-router-dom";
+import Title from "antd/es/typography/Title";
+
+
+const CartItem = ()=>{
+    const [cart, setCart] = useCart();
+    const [totalPrice, setTotalPrice] = useState(0);
+
+    useEffect(()=>{
+        let total = cart.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue.count * currentValue.price
+        },0)
+        total.toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        })
+        setTotalPrice(total)
+
+
+    },[cart])
+
+
+    return (
+        <>
+            <Card>
+                {
+                    cart.map(product => (
+                        <>
+                            <div>
+                                <h1>{product?.name}</h1>
+                                <Row>
+                                    <Col flex={2}><p>{product?.price}</p></Col>
+                                    <Col flex={3}>
+                                        <InputNumber min={1} max={product.quantity} defaultValue={product.count} onChange={(value)=>{
+
+                                            let cartarr = [];
+                                            cartarr = JSON.parse(localStorage.getItem('cart'));
+
+                                            cartarr.map((item, i) => {
+                                                if (item._id === product._id){
+                                                    cartarr[i].count =  value
+                                                }
+                                            })
+
+                                            localStorage.setItem('cart', JSON.stringify(cartarr));
+                                            setCart(cartarr);
+                                        }} />
+                                    </Col>
+                                </Row>
+                            </div>
+                            <Divider></Divider>
+                        </>
+                    ))
+                }
+                <div className='d-flex justify-content-between'>
+                    <p></p>
+                    <div><p>Total Amount</p><p>${parseFloat(totalPrice).toFixed(2)}</p></div>
+                </div>
+
+            </Card>
+
+        </>
+    )
+}
+
+const steps = [
+    {
+        title: 'My Cart',
+        content: <CartItem/>,
+    },
+    {
+        title: 'Checkout',
+        content: 'Second-content',
+    },
+    {
+        title: 'Payment',
+        content: 'Last-content',
+    },
+];
 
 const ShoppingCard = () => {
 
@@ -15,14 +93,15 @@ const ShoppingCard = () => {
     const [clientToken, setClientToken] = useState('');
     const [instance, setInstance] = useState(null);
     const [loading, setLoading] = useState(false);
-
     const [totalPrice, setTotalPrice] = useState(0);
+
     const navigate = useNavigate();
 
-    useEffect(()=>{
 
+
+    useEffect(()=>{
         let total = cart.reduce((accumulator, currentValue) => {
-           return accumulator + currentValue.count * currentValue.price
+            return accumulator + currentValue.count * currentValue.price
         },0)
         total.toLocaleString('en-US', {
             style: 'currency',
@@ -79,83 +158,118 @@ const ShoppingCard = () => {
     }
 
 
+    // Checkout process
+
+
+    const { token: themeToken } = theme.useToken();
+    const [current, setCurrent] = useState(0);
+    const next = () => {
+        setCurrent(current + 1);
+    };
+
+    const prev = () => {
+        setCurrent(current - 1);
+    };
+    const items = steps.map((item) => ({
+        key: item.title,
+        title: item.title,
+    }));
+    const contentStyle = {
+        lineHeight: '260px',
+        textAlign: 'center',
+        color: themeToken.colorTextTertiary,
+        backgroundColor: themeToken.colorFillAlter,
+        borderRadius: themeToken.borderRadiusLG,
+        border: `1px dashed ${themeToken.colorBorder}`,
+        marginTop: 16,
+    };
+
     return (
         <>
+
+            <Steps current={current} items={items} />
+
+
             {
                 loading ? <div>Loading...</div> :
                     <div>
-                        <Row>
-                            <Col
-                                span={18}
-                                xs={{                        order: 1,                    }}
-                                sm={{                        order: 2,                    }}
-                                md={{                        order: 3,                    }}
-                                lg={{                        order: 4,                    }}
-                            >
-                                <Card>
-                                    {
-                                        cart.map(product => (
-                                            <>
-                                                <div>
-                                                    <h1>{product?.name}</h1>
-                                                    <Row>
-                                                        <Col flex={2}><p>{product?.price}</p></Col>
-                                                        <Col flex={3}>
-                                                            <InputNumber min={1} max={product.quantity} defaultValue={product.count} onChange={(value)=>{
+                        <Row gutter={16}>
+                        <Col span={18}>
+                            <div style={contentStyle}>{steps[current].content}</div>
 
-                                                                let cartarr = [];
-                                                                cartarr = JSON.parse(localStorage.getItem('cart'));
+                        </Col>
 
-                                                                cartarr.map((item, i) => {
-                                                                    if (item._id === product._id){
-                                                                        cartarr[i].count =  value
-                                                                    }
-                                                                })
-
-                                                                localStorage.setItem('cart', JSON.stringify(cartarr));
-                                                                setCart(cartarr);
-                                                            }} />
-                                                        </Col>
-                                                    </Row>
-                                                </div>
-                                                <Divider></Divider>
-                                            </>
-                                        ))
-                                    }
-
-                                    <div className='d-flex justify-content-between'>
-                                        <p></p>
-                                        <div><p>Total Amount</p><p>${parseFloat(totalPrice).toFixed(2)}</p></div>
-                                    </div>
-
-                                </Card>
-                            </Col>
                             <Col
                                 span={6}
-                                xs={{    order: 1, }}
-                                sm={{     order: 2,      }}
-                                md={{                        order: 3,             }}
-                                lg={{                        order: 4,                    }}
                             >
-                                {
+
+                                <>
+                                    <Card title='Order Summary' style={{marginTop: '15px'}}>
+                                        <div className='d-flex justify-content-between align-items-center border-bottom'>
+                                            <p>Subtotal </p>
+                                            <p>${parseFloat(totalPrice).toFixed(2)} </p>
+                                        </div>
+                                        <div className='d-flex justify-content-between align-items-center border-bottom'>
+                                            <p>Tax </p>
+                                            <p>$00.00</p>
+                                        </div>
+                                        <div className='d-flex justify-content-between align-items-center'>
+                                            <p>Total Amount </p>
+                                            <p>${parseFloat(totalPrice).toFixed(2)}</p>
+                                        </div>
+
+                                        <div
+                                            style={{
+                                                marginTop: 24,
+                                            }}
+                                        >
+                                            {current < steps.length - 1 && (
+                                                <Button type="primary" block onClick={() => next()}>
+                                                    Procced to checkout
+                                                </Button>
+                                            )}
+                                            {current === steps.length - 1 && (
+                                                <Button type="primary" onClick={() => message.success('Processing complete!')}>
+                                                    Done
+                                                </Button>
+                                            )}
+
+                                            {current > 0 && (
+                                                <Button
+                                                    style={{
+                                                        margin: '0 8px',
+                                                    }}
+                                                    onClick={() => prev()}
+                                                >
+                                                    Previous
+                                                </Button>
+                                            )}
+                                        </div>
+                                    </Card>
+                                </>
+
+
+
+
+                                {/*{
                                     !clientToken || !cart.length ? (
                                         ""
                                     ) : <>
 
-                                {/*   <DropIn*/}
-                                {/*    options={*/}
-                                {/*    {*/}
-                                {/*        authorization: clientToken,*/}
-                                {/*        paypal: {*/}
-                                {/*            flow: 'vault'*/}
-                                {/*        }*/}
-                                {/*    }*/}
-                                {/*    }*/}
-                                {/*    onInstance={(instance) => (setInstance(instance))}*/}
-                                {/*/>*/}
-                                {/*<div>*/}
-                                {/*    <Button type='primary' disabled={!instance} className='d-block buy-button' onClick={buy}>Buy</Button>*/}
-                                {/*</div>*/}
+                                   <DropIn
+                                    options={
+                                    {
+                                        authorization: clientToken,
+                                        paypal: {
+                                            flow: 'vault'
+                                        }
+                                    }
+                                    }
+                                    onInstance={(instance) => (setInstance(instance))}
+                                />
+                                <div>
+                                    <Button type='primary' disabled={!instance} className='d-block buy-button' onClick={buy}>Buy</Button>
+                                </div>
 
                                         <div id='dropin-container'></div>
                                         <div>
@@ -163,7 +277,7 @@ const ShoppingCard = () => {
                                         </div>
 
                                     </>
-                                }
+                                }*/}
 
                             </Col>
                         </Row>
