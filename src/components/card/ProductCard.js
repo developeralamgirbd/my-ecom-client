@@ -1,16 +1,15 @@
 import React, {useRef} from 'react';
 import {Link} from "react-router-dom";
-import {Button, Image} from "antd";
+import {Button, Col, Image, Skeleton} from "antd";
 import toast from "react-hot-toast";
 import {useCart} from "../../context/cart";
 import { Typography } from 'antd';
 const { Title } = Typography;
 
-const ProductCard = ({product}) => {
+const ProductCard = ({product, loading}) => {
 
     const [cart, setCart] = useCart();
     const cartRef = useRef();
-
     const handleCart = ()=>{
         product.count = 1;
 
@@ -40,9 +39,7 @@ const ProductCard = ({product}) => {
     return (
         <>
             <div>
-
                 <Link to={`/product/${product._id}`}>
-
                     <Image
                         width='100%'
                         height={300}
@@ -51,6 +48,8 @@ const ProductCard = ({product}) => {
                         fallback={product.image}
 
                     />
+
+
                 </Link>
 
                 <div className='text-center'>
@@ -58,6 +57,7 @@ const ProductCard = ({product}) => {
                         <Link to={`/product/${product._id}`}>
                             <Title level={5}> {product.name} </Title>
                         </Link>
+
                     </h1>
                     <p>Price: {product.price}</p>
                     <div className='d-flex gap-2 justify-content-center'>

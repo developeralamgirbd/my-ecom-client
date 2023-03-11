@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import {Checkbox, Col, Radio, Row} from "antd";
+import {Checkbox, Col, Radio, Row, Skeleton} from "antd";
 import { prices } from "../prices";
 import useCategories from "../hooks/useCategories";
 import {getProductsRequest} from "../APIRequest/productApi";
 import ProductCard from "../components/card/ProductCard";
+import ProductSkeleton from "./skeleton/ProductSkeleton";
 
 const ShopPage = ()=> {
-    const [categories, setCategories] = useCategories();
+    const [categories, setCategories, catLoading, setCatLoading] = useCategories();
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -19,7 +20,9 @@ const ShopPage = ()=> {
 
     const loadProducts = async ()=>{
         try {
+            setLoading(true);
             const res = await getProductsRequest(page);
+            setLoading(false);
             setProducts(res?.products?.rows);
             setTotal(res?.products?.total)
 
@@ -30,10 +33,12 @@ const ShopPage = ()=> {
 
     const loadFilterProducts = async ()=>{
         try {
+            setLoading(true);
             const {data} = await axios.post('/products/filtered', {
                 checked: checked,
                 radio: radio
             });
+            setLoading(false);
             setProducts(data?.products?.rows);
             setTotal(data?.products?.total)
 
@@ -106,15 +111,17 @@ const ShopPage = ()=> {
                         <h2 className="p-3 mt-2 mb-2 h4 bg-light text-center">
                             Filter by Categories
                         </h2>
-                        <div className="row p-5">
-                            {categories?.map((c) => (
+
+                        <div className="p-5">
+                            {categories !== undefined ? categories?.map((c) => (
                                 <Checkbox
                                     key={c.name}
                                     onChange={(e) => handleCheck(e.target.checked, c.name)}
                                 >
                                     {c.name}
                                 </Checkbox>
-                            ))}
+                            )): ''}
+                            <Skeleton active={true} loading={catLoading} paragraph={{rows: 4}} />
                         </div>
 
                         <h2 className="p-3 mt-2 mb-2 h4 bg-light text-center">
@@ -155,6 +162,8 @@ const ShopPage = ()=> {
                                     <ProductCard product={product} />
                                 </Col>
                             ))}
+
+                            <ProductSkeleton loading={loading}/>
 
                             <div className="container text-center p-5">
                                 {products && products.length < total && (

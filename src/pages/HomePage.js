@@ -3,6 +3,7 @@ import {Button, Col, List, Row, Skeleton} from "antd";
 import {getProductsRequest} from "../APIRequest/productApi";
 import ProductCard from "../components/card/ProductCard";
 import TopSection from "../components/home/TopSection";
+import ProductSkeleton from "./skeleton/ProductSkeleton";
 
 const HomePage = () => {
 
@@ -63,39 +64,7 @@ const HomePage = () => {
                          </Col>
                     ))
                 }
-
-                <Col span={6} style={{marginBottom: '30px'}}>
-                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
-                    </Skeleton>
-                </Col>
-                <Col span={6} style={{marginBottom: '30px'}}>
-                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
-                    </Skeleton>
-                </Col>
-                <Col span={6} style={{marginBottom: '30px'}}>
-                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
-                    </Skeleton>
-                </Col>
-                <Col span={6} style={{marginBottom: '30px'}}>
-                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
-                    </Skeleton>
-                </Col>
-                <Col span={6} style={{marginBottom: '30px'}}>
-                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
-                    </Skeleton>
-                </Col>
-                <Col span={6} style={{marginBottom: '30px'}}>
-                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
-                    </Skeleton>
-                </Col>
-                <Col span={6} style={{marginBottom: '30px'}}>
-                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
-                    </Skeleton>
-                </Col>
-                <Col span={6} style={{marginBottom: '30px'}}>
-                    <Skeleton loading={loading} title={{width: '100%'}} avatar={{shape: 'square', size: 'large'}} active={true} paragraph={{rows: 2}} >
-                    </Skeleton>
-                </Col>
+                <ProductSkeleton loading={loading}/>
 
             </Row>
 

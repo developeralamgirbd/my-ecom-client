@@ -6,13 +6,15 @@ import React from "react";
 
 const Search = () => {
 
-    const { setProducts, keyword, setKeyword, setTotal } = useSearch();
+    const { setProducts, keyword, setKeyword, setTotal,setSearchProductLoading } = useSearch();
     const navigate = useNavigate();
 
     const handleSubmit = async (e)=> {
         e.preventDefault();
         try {
+            setSearchProductLoading(true)
             getProductsByKeywordRequest(keyword, 1).then(res => {
+                setSearchProductLoading(false)
                 setProducts(res?.products?.rows);
                 setTotal(res?.products?.total)
             })

@@ -4,26 +4,12 @@ import {Button, Col, Row} from "antd";
 import PostCard from "../components/card/ProductCard";
 import {getPostsByKeywordRequest, getProductsRequest} from "../APIRequest/productApi";
 import ProductCard from "../components/card/ProductCard";
+import ProductSkeleton from "./skeleton/ProductSkeleton";
 
 const ProductsBySearch = () => {
-    const {products, setProducts, keyword, total, setTotal} = useSearch();
+    const {products, setProducts, keyword, total, searchProductLoading, setSearchProductLoading} = useSearch();
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
-
-
-    // const loadMore = async ()=>{
-    //     try {
-    //         setLoading(true);
-    //         getPostsByKeywordRequest(keyword, 1).then(res => {
-    //             setPosts(res?.data[0]?.products);
-    //             setTotal(res?.data[0]?.totalPost[0]?.count);
-    //         })
-    //         setLoading(false);
-    //     }catch (e) {
-    //         console.log(e);
-    //     }
-    //
-    // }
 
     const loadMore = async ()=>{
         try {
@@ -65,8 +51,9 @@ const ProductsBySearch = () => {
                             ))
 
                         }
+                        <ProductSkeleton loading={searchProductLoading || loading}/>
                     </Row>
-                    :<h3 className='text-center d-block'>Product Not found</h3>
+                    : <h3 className='text-center d-block'>Product Not found</h3>
             }
 
             {products && products.length < total && (

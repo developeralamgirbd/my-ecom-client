@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import {getPostsByCategoryRequest, getPostsRequest, getProductsByCategoryRequest} from "../APIRequest/productApi";
 import {Button, Col, Row} from "antd";
 import ProductCard from "../components/card/ProductCard";
+import ProductSkeleton from "./skeleton/ProductSkeleton";
 
 const ProductsByCategory = () => {
 
@@ -14,7 +15,9 @@ const ProductsByCategory = () => {
 
     const loadProducts = async ()=> {
         try {
+            setLoading(true)
            const res =  await getProductsByCategoryRequest(params.name, page);
+            setLoading(false)
             setProducts(res?.products[0]?.rows);
             setTotal(res?.products[0]?.totalProduct[0]?.count)
 
@@ -61,8 +64,14 @@ const ProductsByCategory = () => {
                             ))
 
                         }
+
                     </Row>
-                    :<h3 className='text-center d-block'>Product Not found</h3>
+                    :  <>
+                    <Row>
+                        <ProductSkeleton loading={loading}/>
+                    </Row>
+                        <h3 className={`text-center ${loading ? 'd-none' : 'd-block'}`}>Product Not found</h3>
+                    </>
             }
 
             {products && products.length < total && (

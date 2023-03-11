@@ -45,6 +45,16 @@ const CartItem = ()=>{
 
 },[cart])
 
+    const cartItemDeleteHandler = (id)=>{
+        const cartArr = JSON.parse(localStorage.getItem('cart'));
+
+        const index = cartArr.findIndex(product => product._id === id);
+
+        cartArr.splice(index, 1);
+       localStorage.setItem('cart', JSON.stringify(cartArr));
+       setCart(cartArr);
+    }
+
 return (
     <>
 
@@ -82,7 +92,7 @@ return (
                                     }} />
                                 </div>
                                 <div>
-                                    <Button>Delete</Button>
+                                    <Button onClick={() => cartItemDeleteHandler(product?._id)}>Delete</Button>
                                 </div>
                             </div>
                         </Card>
@@ -334,14 +344,19 @@ const Payment = ()=>{
                     {/*<div>*/}
                     {/*    <Button type='primary' disabled={!instance} className='d-block buy-button' onClick={buy}>Buy</Button>*/}
                     {/*</div>*/}
+                    <Row>
+                        <Col span={12} offset={6}>
+                            <div id='dropin-container'></div>
 
-                    <div id='dropin-container'></div>
+                            <div className='mb-4'>
+                                <Button type='primary' id='#submit-button' disabled={!instance ||loading} className='d-block buy-button' onClick={buy} block>
+                                    {loading ? 'Processing' : 'Buy'}
+                                </Button>
+                            </div>
+                        </Col>
+                    </Row>
 
-                    <div>
-                        <Button type='primary' id='#submit-button' disabled={!instance ||loading} className='d-block buy-button' onClick={buy} block>
-                            {loading ? 'Processing' : 'Buy'}
-                        </Button>
-                    </div>
+
 
                 </>
             }
@@ -405,8 +420,6 @@ const ShoppingCard = () => {
         }else if (current === 1 && !getAddress) {
             toast.error('Please provide a shipping address')
         }
-
-
     };
 
     const prev = () => {
@@ -496,7 +509,7 @@ const ShoppingCard = () => {
 
                             </Col>
                         </Row>
-                        {current > 0 && (
+                       {/* {current > 0 && (
                             <Button
                                 style={{
                                     margin: '0 8px',
@@ -505,7 +518,7 @@ const ShoppingCard = () => {
                             >
                                 Back to cart
                             </Button>
-                        )}
+                        )}*/}
                     </div>
             }
 
