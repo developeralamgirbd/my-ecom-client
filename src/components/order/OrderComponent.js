@@ -1,11 +1,13 @@
 import React from 'react';
 import {Card} from "antd";
+import OrderList from "./OrderList";
 
 const OrderComponent = () => {
+
     return (
         <div>
             <Card>
-                OrderProduct
+                <OrderList/>
             </Card>
         </div>
     );

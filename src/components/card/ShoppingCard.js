@@ -115,7 +115,8 @@ const ShippingInfo = ({auth})=>{
 
     useEffect(()=>{
         getAddressRequest().then(res => {
-            setAddress(res?.address[0])
+            setAddress(res?.address[0]);
+            localStorage.setItem('shippingAddress', JSON.stringify(res?.address[0]))
         })
     },[])
 
