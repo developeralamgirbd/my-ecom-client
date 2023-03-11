@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Avatar, Button, List, Skeleton, Space, Table, Tag} from "antd";
+import Moment from "react-moment";
+import {Link} from "react-router-dom";
 
-const OrderList = () => {
+const OrderList = ({orders, loading}) => {
 
-    const [initLoading, setInitLoading] = useState(true);
-    const [loading, setLoading] = useState(false);
-    const [list, setList] = useState([]);
 
 
 /*
@@ -26,79 +25,78 @@ const OrderList = () => {
     const columns = [
         {
             title: 'Invoice No ',
-            dataIndex: 'name',
-            key: 'name',
-            render: (text) => <a>{text}</a>,
+            dataIndex: 'orderID',
+            key: 'orderID',
         },
         {
             title: 'Order Date',
-            dataIndex: 'age',
-            key: 'age',
+            dataIndex: 'createdAt',
+            key: 'createdAt',
+            render: (text) => <Moment format="YYYY/MM/DD">${text}</Moment>,
         },
         {
             title: 'Amount',
-            dataIndex: 'address',
-            key: 'address',
+            dataIndex: 'totalAmount',
+            key: 'totalAmount',
+            render: (text) => <span>${text}</span>,
+        },
+        {
+            title: 'Payment Status',
+            dataIndex: 'paymentStatus',
+            key: 'paymentStatus',
+            render: (_, {paymentStatus} ) =>
+
+            {
+                let color = paymentStatus === 'paid' ? '#52c41a' : '#cf1322';
+                return (
+                    <Tag color={color} key={paymentStatus}>
+                        {paymentStatus.toUpperCase()}
+                    </Tag>
+                );
+            }
         },
 
         {
             title: 'Status',
-            key: 'tags',
-            dataIndex: 'tags',
-            render: (_, { tags }) => (
-                <>
-                    {tags.map((tag) => {
-                        let color = tag.length > 5 ? 'geekblue' : 'green';
-                        if (tag === 'loser') {
-                            color = 'volcano';
+            key: 'status',
+            dataIndex: 'status',
+            render: (_, {status} ) =>
+
+                    {
+                        let color = status === 'onhold' ? '#C9820A' : '#C9820A';
+                        if (status === 'processing') {
+                            color = '#fadb14';
+                        }else if (status === 'delivered'){
+                            color = '#52c41a';
+                        }else if (status === 'cancelled'){
+                            color = '#cf1322';
                         }
                         return (
-                            <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
+                            <Tag color={color} key={status}>
+                                {status.toUpperCase()}
                             </Tag>
                         );
-                    })}
-                </>
-            ),
+                    }
         },
         {
             title: 'Action',
             key: 'action',
-            render: (_, record) => (
+            render: (_, {_id}) => (
                 <Space size="middle">
-                    <Button>View</Button>
+                    <Button>
+                        <Link to={`/customer/orders/details/${_id}`}>View</Link>
+                    </Button>
                 </Space>
             ),
         },
     ];
 
-    const data = [
-        {
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-    ];
 
     return (
         <>
-            <Table columns={columns} dataSource={data} />;
+            <Skeleton paragraph={{rows: 8}} active={true} loading={loading}>
+                <Table columns={columns} dataSource={orders} />;
+            </Skeleton>
         </>
     );
 };

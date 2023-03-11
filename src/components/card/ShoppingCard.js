@@ -18,7 +18,7 @@ import {
 import {useCart} from "../../context/cart";
 import toast from "react-hot-toast";
 import {useAuth} from "../../context/AuthProvider";
-import {checkoutRequest, getPaymentTokenRequest, getSingleProductRequest} from "../../APIRequest/productApi";
+import {checkoutRequest, getPaymentTokenRequest} from "../../APIRequest/orderApi";
 // import DropIn from "braintree-web-drop-in-react";
 import DropIn from "braintree-web-drop-in";
 import {Link, useNavigate} from "react-router-dom";

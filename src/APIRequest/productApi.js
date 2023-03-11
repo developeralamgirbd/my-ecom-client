@@ -140,22 +140,3 @@ export const deletePostRequest = async (id)=>{
     }
 }
 
-// Order API Request
-export const getPaymentTokenRequest = async ()=>{
-    try {
-        const {data} = await axios.get(`/braintree-token`);
-       return data
-    }catch (e) {
-        toast.error(e.response.data.error)
-    }
-}
-
-export const checkoutRequest = async (nonce, cart, shippingAddress)=>{
-    try {
-        const {data} = await axios.post(`/checkout`, {nonce, cart, shippingAddress});
-        return data
-    }catch (e) {
-        toast.error(e.response.data.error)
-        return false
-    }
-}

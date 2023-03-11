@@ -24,6 +24,7 @@ import UserMain from "../layouts/UserMain";
 import UserDashboardPage from "../pages/dashboard/UserDashboard-page";
 import OrderPage from "../pages/OrderPage";
 import ShopPage from "../pages/ShopPage";
+import OrderDetails from "../components/order/OrderDetails";
 
 const router = createBrowserRouter([
 
@@ -132,6 +133,10 @@ const router = createBrowserRouter([
             {
                 path: '/customer/orders',
                 element: <OrderPage/>
+            },
+            {
+                path: '/customer/orders/details/:id',
+                element: <OrderDetails/>
             },
         ]
     },
