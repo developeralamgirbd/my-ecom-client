@@ -409,8 +409,11 @@ const ShoppingCard = () => {
         }
     ];
 
-
     const next = () => {
+        if (!token){
+            navigate('/login');
+        }
+
         const getAddress = JSON.parse(localStorage.getItem('shippingAddress'));
 
         if (current === 0 && cart.length > 0){

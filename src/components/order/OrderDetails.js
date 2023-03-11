@@ -137,8 +137,6 @@ const OrderDetails = () => {
                                 <span>Subtotal:</span>
                                 <span style={{marginRight: '50px'}}>{subTotal}</span>
                             </div>
-
-
                     </Col>
                 </Row>
             </div>
