@@ -29,29 +29,39 @@ const SingleProduct = () => {
 
 
     const handleCart = ()=>{
-        product.count = count;
 
-        let cartarr = [];
-        cartarr= JSON.parse(localStorage.getItem('cart')) || [];
+        if (product.quantity === 0){
+            toast.error('Product is out of stock');
+            return
 
-        const isProductExit = cartarr.find(item => item._id === product._id);
-
-        if (isProductExit){
-            cartarr.map((item, i) => {
-                if (item._id === product._id){
-                    if ( cartarr[i].count !== product.quantity){
-                        cartarr[i].count += count;
-                        cartarr[i].price = product.price
-                    }
-                }
-            })
-        }else {
-            cartarr.push(product);
         }
 
-        localStorage.setItem('cart', JSON.stringify(cartarr));
-        setCart(cartarr);
-        toast.success('Added to cart success')
+            product.count = count;
+
+            let cartarr = [];
+            cartarr= JSON.parse(localStorage.getItem('cart')) || [];
+
+            const isProductExit = cartarr.find(item => item._id === product._id);
+
+            if (isProductExit){
+                cartarr.map((item, i) => {
+                    if (item._id === product._id){
+                        if ( cartarr[i].count !== product.quantity){
+                            cartarr[i].count += count;
+                            cartarr[i].price = product.price
+                        }
+                    }
+                })
+            }else {
+                cartarr.push(product);
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cartarr));
+            setCart(cartarr);
+            toast.success('Added to cart success')
+
+
+
     }
 
     const increase = ()=>{
@@ -107,7 +117,7 @@ const SingleProduct = () => {
                             <Title>{product.name}</Title>
                             <Title>${product.price}</Title>
                             <div className='d-flex gap-2 align-items-center'>
-                                <div style={{background: '#eaff8f', color: '#5b8c00', borderRadius: '5px', padding: '10px'}}>In stock</div>
+                                <div style={{background: '#eaff8f', color: '#5b8c00', borderRadius: '5px', padding: '10px'}}>{ product.quantity > 0 ? 'In stock' : 'out of stock'}</div>
                                 <p style={{padding: '10px', margin: 0}}>{product.quantity} items remaining</p>
                             </div>
                             <Row className='mt-4' gutter={16}>
@@ -115,7 +125,7 @@ const SingleProduct = () => {
                                     <Input
                                         addonBefore={<MinusOutlined onClick={decrease}/>}
                                         addonAfter={<PlusOutlined onClick={increase} />}
-                                        value={count} readOnly size='large' />
+                                        value={product.quantity > 0 ? count : 0} readOnly size='large' />
 
                                 </Col>
                                 <Col span={16}>

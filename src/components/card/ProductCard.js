@@ -10,7 +10,14 @@ const ProductCard = ({product, loading}) => {
 
     const [cart, setCart] = useCart();
     const cartRef = useRef();
-    const handleCart = ()=>{
+
+    const handleCart = (quantity)=>{
+
+        if (quantity === 0){
+            toast.error('Product is out of stock');
+            return
+        }
+
         product.count = 1;
 
         let cartarr = [];
@@ -63,7 +70,7 @@ const ProductCard = ({product, loading}) => {
                     <div className='d-flex gap-2 justify-content-center'>
                         <Button type="primary"
                                 style={{background: '#faad14', color: '#141414', fontWeight: 'bold', padding: '0 20px'}}
-                                size='small' onClick={handleCart} block>Add to cart</Button>
+                                size='small' onClick={()=>handleCart(product.quantity)} block>Add to cart</Button>
                         {/*<Button type="primary"*/}
                         {/*        style={{fontWeight: 'bold', padding: '0 20px'}}*/}
                         {/*        danger size='large' className='ml-2'>Buy now</Button>*/}
