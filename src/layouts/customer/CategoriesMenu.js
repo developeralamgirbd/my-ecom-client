@@ -45,7 +45,7 @@ const CategoriesMenu = () => {
     return (
         <>
             <div onClick={()=> location.pathname === '/' ? setOpen(true) : setOpen(!open) }
-                 className='d-flex justify-content-between' style={{cursor: 'pointer', padding: '10px'}}>
+                 className='d-flex justify-content-between' style={{cursor: 'pointer', padding: '15px'}}>
                 Categories
                 <DownOutlined />
             </div>

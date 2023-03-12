@@ -158,7 +158,7 @@ const SiteHeader = () => {
                 <div className='container' >
                     <Row style={{height: '100%'}}>
                         <Col span={5}>
-                            <div className='border' style={{height: location.pathname === '/' ? '100%': 'auto'}}>
+                            <div className='border' style={{height: location.pathname === '/' ? '100%': '100%'}}>
                                 <CategoriesMenu/>
                             </div>
                         </Col>

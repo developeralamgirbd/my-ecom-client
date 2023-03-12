@@ -14,7 +14,6 @@ const AuthProvider = ({children}) => {
 
     useEffect(()=>{
         const user = getAuth();
-
         if (user){
             setAuth(user);
             setToken(getToken())
